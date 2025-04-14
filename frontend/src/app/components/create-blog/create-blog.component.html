@@ -1,0 +1,17 @@
+<div class="create">
+    <h2>Add a New Blog</h2>
+    
+    <form (submit)="postBlog()">
+      <label>Blog title:</label>
+      <input type="text" [(ngModel)]="title" name="title" placeholder="Title" required /><br />
+      
+      <label>Blog body:</label>
+      <input type="text" [(ngModel)]="content" name="content" placeholder="Content" required /><br />
+      
+      <!-- Move the posting as text above the submit button -->
+      <p class="username-info">Posting as: {{username}}</p>
+      
+      <button type="submit">Submit</button>
+    </form>
+</div>
+  

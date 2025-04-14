@@ -1,0 +1,23 @@
+<p>blog works!</p>
+
+<!-- Create or Update Form
+<form (submit)="isEditing ? updateBlog() : postBlog()">
+  <input type="text" [(ngModel)]="title" name="title" placeholder="Title" required /><br />
+  <input type="text" [(ngModel)]="content" name="content" placeholder="Content" required /><br />
+  <button type="submit">{{ isEditing ? 'Update' : 'Submit' }}</button>
+  <button *ngIf="isEditing" type="button" (click)="resetForm()">Cancel</button>
+</form> -->
+
+<app-all-blogs></app-all-blogs>
+
+<!-- Blog List -->
+<ul>
+  <li *ngFor="let post of blogs">
+    <strong>{{ post.username }}</strong><br />
+    <span>{{ post.title }}</span><br />
+    <span>{{ post.content }}</span><br />
+    <small>{{ post.createdAt | date: 'short' }}</small><br />
+    <button (click)="deleteBlog(post._id)">Delete</button>
+    <button (click)="editBlog(post)">Edit</button>
+  </li>
+</ul>
