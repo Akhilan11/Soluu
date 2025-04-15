@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +26,11 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string) {
+  async login(username : string, password: string) {
     try {
-      const response = await axios.post(this.url + "/login", { email, password });
+      const response = await axios.post(this.url + "/login", { username, password });
       localStorage.setItem("jwttoken", response.data.token);
-      localStorage.setItem("email", email); // Optional: Store email
+      localStorage.setItem("username", username); // Optional: Store email
       this.loggedIn.next(true); // ✅ Notify subscribers about login
       return response.data;
     } catch (error) {
@@ -45,11 +45,17 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem("jwttoken");
-    localStorage.removeItem("email");
+    localStorage.removeItem("username");
     this.loggedIn.next(false); // ✅ Notify subscribers about logout
   }
 
   getToken(): string | null {
     return localStorage.getItem("jwttoken");
   }
+
+  // Method to fetch all user emails
+  getAllUserEmails(): Observable<string[]> {
+    return this.http.get<string[]>(this.url + "/getmails");
+  }
+  
 }

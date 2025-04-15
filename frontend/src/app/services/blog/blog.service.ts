@@ -7,11 +7,10 @@ import { Observable } from 'rxjs';
 })
 export class BlogService {
 
-  private url : string = "http://localhost:5000/api/blogs";
+  private url: string = "http://localhost:5000/api/blogs";
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  // Helper: Get JWT token from localStorage
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('jwttoken');
     return new HttpHeaders({
@@ -19,33 +18,36 @@ export class BlogService {
     });
   }
 
-  getBlogs() : Observable<any> {
+  getBlogs(): Observable<any> {
     return this.http.get(this.url);
   }
 
-  postBlog(blog : any) : Observable<any> {
+  postBlog(blog: any): Observable<any> {
     return this.http.post(this.url, blog, {
       headers: this.getAuthHeaders()
     });
   }
 
-  deleteBlog(id : any) : Observable<any> {
-    return this.http.delete(this.url + '/' + id, {
+  deleteBlog(id: any): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
 
-  updateBlog(id : any, blog : any) : Observable<any> {
-    return this.http.put(this.url + '/' + id, blog, {
+  updateBlog(id: any, blog: any): Observable<any> {
+    return this.http.put(`${this.url}/${id}`, blog, {
       headers: this.getAuthHeaders()
     });
   }
 
-  getBlogById(id : any) : Observable<any> {
-    return this.http.get(this.url + '/' + id, {
+  getBlogById(id: any): Observable<any> {
+    return this.http.get(`${this.url}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
 
+  // ✅ Add this method for similar blogs
+  getSimilarBlogs(blogId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/similar/${blogId}`);
+  }
 }
-

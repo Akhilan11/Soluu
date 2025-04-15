@@ -9,18 +9,18 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  email: string = '';
+  username: string = '';
   password: string = '';
 
   constructor(private authService: AuthService, private router : Router) {}
 
   async login() {
     try {
-      const response = await this.authService.login(this.email, this.password);
+      const response = await this.authService.login(this.username, this.password);
       alert('Login successful!');
       console.log('Login response:', response);
       localStorage.setItem('jwttoken', response.token); 
-      localStorage.setItem('email', this.email); // Store email in local storage
+      localStorage.setItem('username', this.username); // Store email in local storage
       this.router.navigate(['/blogs']);
     } catch (error) {
       alert('Login failed. Please try again.');

@@ -15,6 +15,7 @@ export class ViewBlogComponent implements OnInit {
   isEditing: boolean = false;
   editableTitle: string = '';
   editableContent: string = '';
+  similarBlogs: any[] = [];
 
   constructor(
     private blogService: BlogService,
@@ -23,14 +24,22 @@ export class ViewBlogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.blogId = this.route.snapshot.paramMap.get('id');
-    if (this.blogId) {
-      this.blogService.getBlogById(this.blogId).subscribe((data: any) => {
-        this.blog = data;
-        const loggedInEmail = localStorage.getItem('email');
-        this.isAuthor = loggedInEmail === this.blog.username;
-      });
-    }
+    this.route.paramMap.subscribe(params => {
+      this.blogId = params.get('id');
+      if (this.blogId) {
+        this.blogService.getBlogById(this.blogId).subscribe((data: any) => {
+          this.blog = data;
+
+          // ✅ Compare username instead of email
+          const loggedInUsername = localStorage.getItem('username');
+          this.isAuthor = loggedInUsername === this.blog.username;
+        });
+
+        this.blogService.getSimilarBlogs(this.blogId).subscribe((similarBlogs: any[]) => {
+          this.similarBlogs = similarBlogs;
+        });
+      }
+    });
   }
 
   deleteBlog(): void {

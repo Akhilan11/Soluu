@@ -1,37 +1,54 @@
-
-<div class="container container">
-<div *ngIf="blog" class="card p-4 shadow-sm">
-    <article>
-      <ng-container *ngIf="!isEditing; else editForm">
-        <h2 class="mb-3" style="font-size: 20px; color: #f1356d;">
-          {{ blog.title }}
-        </h2>
+<div class="container">
+    <div *ngIf="blog" class="card p-4 shadow-sm">
+      <article>
+        <ng-container *ngIf="!isEditing; else editForm">
+          <h2 class="mb-3" style="font-size: 20px; color: #f1356d;">
+            {{ blog.title }}
+          </h2>
   
-        <p class="text-muted mb-4">
-          Written by <strong>{{ blog.username }}</strong>
-        </p>
+          <p class="text-muted mb-4">
+            Written by <strong>{{ blog.username }}</strong>
+          </p>
   
-        <div class="mb-4">{{ blog.content }}</div>
+          <div class="mb-4">{{ blog.content }}</div>
   
-        <button *ngIf="isAuthor" class="btn btn-primary me-2" (click)="updateBlog()">Edit</button>
-        <button *ngIf="isAuthor" class="btn btn-danger" (click)="deleteBlog()">Delete</button>
-      </ng-container>
+          <button *ngIf="isAuthor" class="btn btn-primary me-2" (click)="updateBlog()">Edit</button>
+          <button *ngIf="isAuthor" class="btn btn-danger" (click)="deleteBlog()">Delete</button>
+        </ng-container>
   
-      <!-- Edit Mode Template -->
-      <ng-template #editForm>
-        <div class="mb-3">
-          <label class="form-label">Blog title</label>
-          <input type="text" class="form-control" [(ngModel)]="editableTitle">
+        <!-- Edit Mode Template -->
+        <ng-template #editForm>
+          <div class="mb-3">
+            <label class="form-label">Blog title</label>
+            <input type="text" class="form-control" [(ngModel)]="editableTitle">
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Blog body</label>
+            <textarea class="form-control" rows="4" [(ngModel)]="editableContent"></textarea>
+          </div>
+  
+          <button class="btn btn-success me-2" (click)="saveChanges()">Update</button>
+          <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </ng-template>
+      </article>
+    </div>
+  
+    <!-- Similar Blogs Section -->
+    <div *ngIf="similarBlogs.length > 0" class="mt-5">
+      <h3>Similar Blogs</h3>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let similarBlog of similarBlogs">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title" style="color: #f1356d;">{{ similarBlog.title }}</h5>
+              <p class="card-text">{{ similarBlog.content | slice: 0:100 }}...</p>
+              <a [routerLink]="['/blog', similarBlog._id]" class="btn btn-link">View More</a>
+            </div>
+          </div>
         </div>
-  
-        <div class="mb-3">
-          <label class="form-label">Blog body</label>
-          <textarea class="form-control" rows="4" [(ngModel)]="editableContent"></textarea>
-        </div>
-  
-        <button class="btn btn-success me-2" (click)="saveChanges()">Update</button>
-        <button class="btn btn-secondary" (click)="isEditing = false">Cancel</button>
-      </ng-template>
-    </article>
+      </div>
+    </div>
+    
   </div>
-</div>
+  
