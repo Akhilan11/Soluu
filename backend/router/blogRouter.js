@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllBlogs, postNewBlog, deleteBlog, updateBlog, getBlogbyId } = require('../controller/blogController');
+const { getAllBlogs, postNewBlog, deleteBlog, updateBlog, getBlogbyId, getSimilarBlogs } = require('../controller/blogController');
 
 const protect = require('../middleware/auth');
 
@@ -19,5 +19,8 @@ router.put('/:id', protect,updateBlog);
 
 // GET a blog by ID
 router.get('/:id', getBlogbyId);
+
+// Get Similar blogs
+router.get('/similar/:id', getSimilarBlogs);
 
 module.exports = router;
